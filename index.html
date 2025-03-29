@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Business - Payment Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .product {
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            width: 300px;
+        }
+        .discount {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function applyDiscount() {
+            let code = document.getElementById('discountCode').value;
+            let priceElement = document.getElementById('price');
+            let originalPrice = 1.20;
+            let discountedPrice = 0.40;
+            
+            if (code === "STARTERVIP" && new Date() <= new Date("2025-04-08")) {
+                priceElement.innerHTML = `$${discountedPrice.toFixed(2)} <span class="discount">(Discount Applied!)</span>`;
+            } else {
+                priceElement.innerHTML = `$${originalPrice.toFixed(2)}`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Welcome to My Business</h1>
+    <div class="product">
+        <h2>Product Name</h2>
+        <p>Original Price: <span id="price">$1.20</span></p>
+        <input type="text" id="discountCode" placeholder="Enter discount code">
+        <button onclick="applyDiscount()">Apply Discount</button>
+        <h3>Pay With:</h3>
+        <p><a href="https://cash.app" target="_blank">Cash App</a></p>
+        <p><a href="https://paypal.com" target="_blank">PayPal</a></p>
+    </div>
+</body>
+</html>
