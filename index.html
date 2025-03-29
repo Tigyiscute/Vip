@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Business - Payment Page</title>
+    <title>Luxury Store - Exclusive Deals</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
             text-align: center;
-            padding: 20px;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
             color: white;
+            overflow: hidden;
         }
         .container {
             display: flex;
@@ -19,40 +23,54 @@
             height: 100vh;
         }
         .product {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 30px;
-            width: 350px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 40px;
+            width: 400px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .discount {
             color: #00ff00;
             font-weight: bold;
+            font-size: 1.2em;
         }
         input, button {
-            margin-top: 10px;
-            padding: 10px;
-            width: 80%;
+            margin-top: 15px;
+            padding: 12px;
+            width: 90%;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 1em;
         }
         input {
             background: white;
             color: black;
         }
         button {
-            background: #ff9800;
-            color: white;
+            background: #ffcc00;
+            color: black;
+            font-weight: bold;
             cursor: pointer;
+            transition: all 0.3s;
         }
         button:hover {
-            background: #e68900;
+            background: #ffdd44;
+            transform: scale(1.05);
         }
         a {
             color: #00ffcc;
             text-decoration: none;
             font-weight: bold;
+            font-size: 1.1em;
+            display: block;
+            margin-top: 10px;
         }
         a:hover {
             text-decoration: underline;
@@ -71,21 +89,40 @@
                 priceElement.innerHTML = `$${originalPrice.toFixed(2)}`;
             }
         }
+        
+        async function redirectToCheckout() {
+            const stripe = Stripe('your-publishable-key-here');
+            
+            const response = await fetch('/create-checkout-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    price: document.getElementById('price').innerText.replace('$', '')
+                })
+            });
+            
+            const session = await response.json();
+            await stripe.redirectToCheckout({ sessionId: session.id });
+        }
     </script>
 </head>
 <body>
     <div class="container">
         <div class="product">
-            <h1>Welcome to My Business</h1>
-            <h2>Product Name</h2>
+            <h1>🔥 Exclusive Deal 🔥</h1>
+            <h2>Premium Product</h2>
             <p>Original Price: <span id="price">$1.20</span></p>
-            <input type="text" id="discountCode" placeholder="Enter discount code">
+            <input type="text" id="discountCode" placeholder="Enter VIP Code">
             <button onclick="applyDiscount()">Apply Discount</button>
-            <h3>Pay With:</h3>
-            <p><a href="https://cash.app" target="_blank">Cash App</a></p>
-            <p><a href="https://paypal.com" target="_blank">PayPal</a></p>
+            <h3>💳 Pay Securely Via:</h3>
+            <p><a href="https://cash.app/$ghostfaceaidan" target="_blank">💰 Cash App - $ghostfaceaidan</a></p>
+            <p><a href="https://paypal.com" target="_blank">💳 PayPal</a></p>
+            <button onclick="redirectToCheckout()">Pay with Credit Card (Stripe)</button>
         </div>
     </div>
 </body>
 </html>
+
 
